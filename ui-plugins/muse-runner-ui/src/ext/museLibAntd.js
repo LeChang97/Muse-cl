@@ -9,3 +9,5 @@ const museLibAntd = {
 };
 
 export default museLibAntd;
+
+//用于全局应用深色模式

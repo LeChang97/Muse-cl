@@ -1,21 +1,22 @@
 import { useMemo, useCallback } from 'react';
 import { Button, Table } from 'antd';
-import { EditOutlined } from '@ant-design/icons';
+import { EditOutlined, UserOutlined } from '@ant-design/icons';
 import jsPlugin from 'js-plugin';
 import _ from 'lodash';
 import { useSelector } from 'react-redux';
 import { useModal } from '@ebay/nice-modal-react';
 import UserInfoModal from './UserInfoModal';
-import { UserOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './UserList.less';
 
 export default function UserList() {
-  const userModal = useModal(UserInfoModal);
-  const users = useSelector(s => s.pluginUsersPlugin.users);
+  const userModal = useModal(UserInfoModal); 
+  const users = useSelector(s => s.pluginUsersPlugin.users); 
 
   const handleEditUser = useCallback(
     user => {
-      userModal.show({ user });
+      userModal.show({ user }); 
     },
     [userModal],
   );
@@ -37,7 +38,7 @@ export default function UserList() {
                   <UserOutlined />
                 </div>
               )}
-              <label>{name}</label>
+              <Link to={`/users/${user.id}`}>{name}</Link>
               <p>{user.job}</p>
             </div>
           );
@@ -71,6 +72,7 @@ export default function UserList() {
   columns.push(
     ..._.flatten(jsPlugin.invoke('userList.columns.getColumns', { columns })).filter(Boolean),
   );
+
   jsPlugin.sort(columns);
 
   return (

@@ -20,4 +20,5 @@ const data = [
     description: 'View and Edit Disputes',
   },
 ];
+
 export default data;

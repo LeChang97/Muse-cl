@@ -9,6 +9,7 @@ const useRunnerData = () => {
     isLoading: runningDataIsLoading,
     error: runningDataError,
   } = useQuery({
+    //实时运行数据（每30s轮询）
     queryKey: ['running-data'],
     refetchInterval: 30000,
     queryFn: async () => {
@@ -21,6 +22,7 @@ const useRunnerData = () => {
     isLoading: configDataIsLoading,
     error: configDataError,
   } = useQuery({
+    //配置数据
     queryKey: ['config-data'],
     queryFn: async () => {
       const configData = (await api.get('/config-data')).data;
@@ -38,6 +40,7 @@ const useRunnerData = () => {
     isLoading: initDataIsLoading,
     error: initDataError,
   } = useQuery({
+    //初始化数据（仅一次）
     queryKey: ['init-data'],
     cacheTime: Infinity, // init-data should need to be fetched once
     queryFn: async () => {
@@ -46,6 +49,7 @@ const useRunnerData = () => {
   });
 
   const {
+    //git仓库状态
     data: gitStatus,
     isLoading: gitStatusIsLoading,
     error: gitStatusError,
@@ -57,6 +61,7 @@ const useRunnerData = () => {
     },
   });
 
+  //合并运行数据&配置数据
   const data = useMemo(() => {
     if (runningData && configData) {
       const appList = _.cloneDeep(configData.appList || []);

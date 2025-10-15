@@ -4,14 +4,17 @@ import NiceModal from '@ebay/nice-modal-react';
 import EditAppModal from '../features/home/EditAppModal';
 
 const museLayout = {
+
+  //顶部配置
   header: {
+    //顶部基本配置：标题
     getConfig() {
       return {
         title: 'Muse Runner',
         backgroundColor: 'rgb(21,40,48)',
       };
     },
-
+    //顶部交互项，按钮和图标
     getItems() {
       return [
         {
@@ -20,6 +23,7 @@ const museLayout = {
           position: 'left',
           render: () => {
             return (
+              //点击按钮会调用
               <Button type="primary" className="ml-5" onClick={() => NiceModal.show(EditAppModal)}>
                 + Add App
               </Button>
@@ -48,10 +52,11 @@ const museLayout = {
       ];
     },
   },
+  //不显示侧边栏
   sider: {
     getConfig() {
       return {
-        mode: 'none',
+        mode: 'none', //禁用模式！
       };
     },
   },

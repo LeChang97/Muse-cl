@@ -28,6 +28,8 @@ const PluginCell = ({ plugin, appId, onMoveUp = noop, onMoveDown = noop, isFirst
     error: startPluginError,
     reset: resetStartPluginState,
   } = useMutation({
+
+    //启动插件
     mutationFn: async () => {
       if (!plugin.dir) {
         Modal.error({
@@ -42,6 +44,7 @@ const PluginCell = ({ plugin, appId, onMoveUp = noop, onMoveDown = noop, isFirst
     },
   });
 
+  //停止插件
   useEffect(() => {
     if (startPluginError) {
       // reset the error state, so that it will not popup again when fast refresh or other re-render cases.
@@ -56,12 +59,15 @@ const PluginCell = ({ plugin, appId, onMoveUp = noop, onMoveDown = noop, isFirst
     },
   });
 
+  //绑定/切换mode
   const { mutateAsync: attachPlugin } = useMutation({
     mutationFn: async (args) => {
       await api.post('/attach-plugin', args);
       await queryClient.refetchQueries({ queryKey: ['config-data'], exact: true });
     },
   });
+
+  //从APP移除插件
   const { mutateAsync: detachPlugin } = useMutation({
     mutationFn: async () => {
       await api.post('/stop-plugin', { dir: plugin.dir });
@@ -71,6 +77,7 @@ const PluginCell = ({ plugin, appId, onMoveUp = noop, onMoveDown = noop, isFirst
     },
   });
 
+  //一键打开目录
   const { mutateAsync: openCode } = useMutation({
     mutationFn: async (e) => {
       // This can be called from menu or icon click, so we need to stop the event propagation.
@@ -83,6 +90,7 @@ const PluginCell = ({ plugin, appId, onMoveUp = noop, onMoveDown = noop, isFirst
     },
   });
 
+  //清空输出
   const { mutateAsync: clearOutput } = useMutation({
     mutationFn: async () => {
       await api.post('/clear-output', { id: `plugin:${plugin.dir}` });

@@ -1,5 +1,11 @@
+//左侧树形列表的可展开表格
+//支持点击行跳转到对应路由（根据最近打开的tab）
+//支持app/plugin上下移动，排序结果提交到后端并刷新缓存
+//记住用户打开了哪些app，持久化到settings
+
+
 import React from 'react';
-import { Table } from 'antd';
+import { Table } from 'antd'; //用于渲染树形数据（children字段）
 import { CaretDownOutlined, CaretRightOutlined } from '@ant-design/icons';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -10,12 +16,14 @@ import lastTabKey from './lastTabKey';
 import './Sider.less';
 import api from './api';
 
+//排序上移
 const moveArrIndexUp = (arr, index) => {
   const tmp = arr[index];
   arr[index] = arr[index - 1];
   arr[index - 1] = tmp;
 };
 
+//排序下移
 const moveArrIndexDown = (arr, index) => {
   const tmp = arr[index];
   arr[index] = arr[index + 1];
@@ -23,18 +31,21 @@ const moveArrIndexDown = (arr, index) => {
 };
 
 export default function Sider({ onSelect }) {
-  const { currentItemId } = useParams();
+  const { currentItemId } = useParams(); //用于高亮当前行
 
   const { data: appList, settings } = useRunnerData();
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();
+
+  //展开行的持久化
   const { mutateAsync: updateSelectedRows } = useMutation({
     mutationFn: async (keys) => {
       await api.post('/settings', { key: 'siderExpandedRows', value: keys });
     },
   });
 
+  //排序上移/下移
   const handleAppMoveUp = async (appId) => {
     const appIndex = appList.findIndex((a) => a.id === appId);
     if (appIndex > 0) {
@@ -73,6 +84,7 @@ export default function Sider({ onSelect }) {
     await queryClient.refetchQueries({ queryKey: ['config-data'], exact: true });
   };
 
+  //列定义
   const columns = [
     {
       title: 'name',

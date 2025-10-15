@@ -1,0 +1,19 @@
+module.exports = {
+  root: true,
+  env: { browser: true, es2020: true },
+  globals: { __MUSE_PLUGIN_NAME__: 'readonly', MUSE_GLOBAL: 'readonly' },
+  extends: [
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:react/jsx-runtime',
+    'plugin:react-hooks/recommended',
+  ],
+  ignorePatterns: ['build', '.eslintrc.cjs', 'postcss.config.cjs', 'tailwind.config.cjs'],
+  parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
+  settings: { react: { version: '18.2' } },
+  plugins: ['react-refresh'],
+  rules: {
+    'react/jsx-no-target-blank': 'off',
+    'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+  },
+};

@@ -29,14 +29,16 @@ const AppCell = ({ app, onMoveUp = noop, onMoveDown = noop, isFirst, isLast }) =
     initData: { museLocalHost },
     https,
   } = useRunnerData();
+  //启动APP
   const { mutateAsync: startApp, isLoading: startAppPending } = useMutation({
     mutationFn: async () => {
-      TermOutput.clear(`app:${app.id}`);
-      await api.post('/start-app', { id: app.id });
-      await queryClient.refetchQueries({ queryKey: ['running-data'], exact: true });
+      TermOutput.clear(`app:${app.id}`); //清空APP终端输出
+      await api.post('/start-app', { id: app.id }); //调用api
+      await queryClient.refetchQueries({ queryKey: ['running-data'], exact: true }); //刷新运行态缓存
     },
   });
 
+  //停止APP
   const { mutateAsync: stopApp, isLoading: stopAppPending } = useMutation({
     mutationFn: async () => {
       await api.post('/stop-app', { id: app.id });
@@ -44,6 +46,7 @@ const AppCell = ({ app, onMoveUp = noop, onMoveDown = noop, isFirst, isLast }) =
     },
   });
 
+  //删除APP
   const { mutateAsync: removeApp } = useMutation({
     mutationFn: async () => {
       try {
@@ -54,6 +57,7 @@ const AppCell = ({ app, onMoveUp = noop, onMoveDown = noop, isFirst, isLast }) =
     },
   });
 
+  //清空输出
   const { mutateAsync: clearOutput } = useMutation({
     mutationFn: async () => {
       await api.post('/clear-output', { id: `app:${app.id}` });
