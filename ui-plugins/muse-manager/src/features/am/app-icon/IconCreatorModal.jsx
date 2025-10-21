@@ -9,7 +9,7 @@ import NiceForm from '@ebay/nice-form-react';
 import IconCanvas from './IconCanvas';
 import ColorPicker from './ColorPicker';
 
-export default NiceModal.create(({ app }) => {
+export default NiceModal.create(({ app }) => { 
   const modal = useModal();
   const initials = _.words(app.title || app.name)
     .slice(0, 2)

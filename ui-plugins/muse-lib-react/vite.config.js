@@ -1,20 +1,22 @@
 import { defineConfig, loadEnv } from 'vite';
-import react from '@vitejs/plugin-react';
+import react from '@vitejs/plugin-react-swc';
 import fs from 'fs-extra';
 import museEsbuildPlugin from '@ebay/muse-vite-plugin/lib/museEsbuildPlugin';
-import museVitePlugin from '@ebay/muse-vite-plugin/lib/museVitePlugin';
+import museVitePlugin from '@ebay/muse-vite-plugin';
 
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return {
     define: {
       'process.env.REACT_APP_MUSE_API_ENDPOINT': JSON.stringify(env.REACT_APP_MUSE_API_ENDPOINT),
-
-      // If you want to exposes all env variables, which is not recommended
       // 'process.env': env
     },
-    plugins: [react(), museVitePlugin()],
+    plugins: [
+      react(),
+      museVitePlugin(),
+    ],
     server: {
+      host: 'local.cloud.ebay.com',
       // hmr: false,
     },
     esbuild: {
@@ -29,7 +31,6 @@ export default defineConfig(({ command, mode }) => {
           '.js': 'jsx',
         },
         plugins: [
-          // This plugin can be deleted if you use `tsx/jsx` for all React files.
           {
             name: 'load-js-files-as-jsx',
             setup(build) {
