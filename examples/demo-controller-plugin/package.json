@@ -5,21 +5,24 @@
   "muse": {
     "type": "normal",
     "devConfig": {
-      "app": "app1",
+      "app": "museaitestdemo",
       "env": "staging"
     }
   },
   "dependencies": {
     "@ebay/muse-core": "1.0.33",
     "@ebay/muse-cra-patch": "^1.0.2",
+    "@ebay/muse-lib-antd": "1.2.13",
+    "@ebay/muse-lib-react": "1.2.16",
+    "@ebay/muse-vite-plugin": "^1.0.54",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@vitejs/plugin-react-swc": "^4.1.0",
     "cross-env": "^7.0.3",
-    "react-scripts": "5.0.1",
-    "@ebay/muse-lib-antd": "1.2.13",
-    "@ebay/muse-lib-react": "1.2.16",
     "js-plugin": "^1.1.0",
+    "react-scripts": "5.0.1",
+    "vite": "^7.1.11",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

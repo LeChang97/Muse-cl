@@ -18,6 +18,5 @@
     "eslint": "^8.14.0"
   },
   "peerDependencies": {
-    "@craco/craco": "7.1.0"
   }
 }

@@ -1,10 +1,11 @@
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Button, Avatar, Form, Alert } from 'antd';
+import { Button, Avatar, Form, Alert, Tabs } from 'antd';
 import NiceModal from '@ebay/nice-modal-react';
 import UserInfoModal from '../components/UserInfoModal';
 import NiceForm from '@ebay/nice-form-react';
 import utils from '@ebay/muse-lib-antd/src/utils';
+import { Children } from 'react';
 
 export default function UserDetail() {
   const { id } = useParams();
@@ -29,6 +30,21 @@ export default function UserDetail() {
   };
   utils.extendFormMeta(meta, 'userBasicInfo', { meta, user });
 
+  const tabs = [
+    {
+      key: 'basicInfo',
+      label: 'Basic Information',
+      children: (
+        <div className="p-3">
+          <Form>
+            <NiceForm meta={meta} viewMode={true} />
+          </Form>
+        </div>
+      ),
+    }
+  ];
+  extendArray(tabs, 'tabs', 'userDetailTab', { tabs, user });
+
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: 24 }}>
@@ -38,28 +54,18 @@ export default function UserDetail() {
           style={{ marginRight: 16, fontSize: 28 }}
         />
         <span style={{ fontSize: 28, fontWeight: 600 }}>{user.name}</span>
+        <Button
+          type="link"
+          size="small"
+          onClick={() => {
+            NiceModal.show(UserInfoModal, { user });
+          }}
+          style={{ marginLeft: 16 }}
+        >
+          Edit
+        </Button>
       </div>
-      <div>
-        <section key="basicInfo">
-          <h3 style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            Basic Information
-            <Button
-              type="link"
-              size="small"
-              onClick={() => {
-                NiceModal.show(UserInfoModal, { user });
-              }}
-            >
-              Edit
-            </Button>
-          </h3>
-          <div className="p-3">
-            <Form>
-              <NiceForm meta={meta} viewMode={true} />
-            </Form>
-          </div>
-        </section>
-      </div>
+      <Tabs items={tabs} /> 
     </div>
   );
 }
