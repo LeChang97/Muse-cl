@@ -5,6 +5,7 @@ import NiceModal from '@ebay/nice-modal-react';
 import UserInfoModal from '../components/UserInfoModal';
 import NiceForm from '@ebay/nice-form-react';
 import utils from '@ebay/muse-lib-antd/src/utils';
+import { extendArray } from '@ebay/muse-lib-antd/src/utils';
 import { Children } from 'react';
 
 export default function UserDetail() {
@@ -20,12 +21,12 @@ export default function UserDetail() {
   const meta = {
     viewMode: true,
     initialValues: user,
-    columns: 2,
+    columns: 1,
     fields: [
       { key: 'name', label: 'Name', order: 10 },
       { key: 'job', label: 'Job', order: 20 },
       { key: 'city', label: 'City', order: 30 },
-      { key: 'address', label: 'Address', colSpan: 2, order: 50 },
+      { key: 'address', label: 'Address', order: 50 },
     ],
   };
   utils.extendFormMeta(meta, 'userBasicInfo', { meta, user });
@@ -44,6 +45,7 @@ export default function UserDetail() {
     }
   ];
   extendArray(tabs, 'tabs', 'userDetailTab', { tabs, user });
+  console.log('extended tabs:', tabs);
 
   return (
     <div>
