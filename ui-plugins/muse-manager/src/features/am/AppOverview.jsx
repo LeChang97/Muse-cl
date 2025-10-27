@@ -8,7 +8,7 @@ import { extendArray } from '@ebay/muse-lib-antd/src/utils';
 export default function AppOverview({ app }) {
   const ability = useAbility();
   const canUpdateApp = ability.can('update', 'App', app);
-
+  
   const nodes = [
     {
       order: 10,

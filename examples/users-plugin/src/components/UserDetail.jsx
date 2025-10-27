@@ -44,8 +44,8 @@ export default function UserDetail() {
       ),
     }
   ];
+  
   extendArray(tabs, 'tabs', 'userDetailTab', { tabs, user });
-  console.log('extended tabs:', tabs);
 
   return (
     <div>
