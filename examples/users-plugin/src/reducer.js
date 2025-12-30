@@ -1,5 +1,24 @@
+function loadRecentlyViewedFromLocal() {
+  try {
+    const saved = localStorage.getItem('recentlyViewedUsers');
+    return saved ? JSON.parse(saved) : [];
+  } catch (e) {
+    console.error('Failed to load recently viewed users:', e);
+    return [];
+  }
+}
+
+function saveRecentlyViewedToLocal(recentlyViewed) {
+  try {
+    localStorage.setItem('recentlyViewedUsers', JSON.stringify(recentlyViewed));
+  } catch (e) {
+    console.error('Failed to save recently viewed users:', e);
+  }
+}
+
 const initialState = {
   users: [],
+  recentlyViewedUsers: loadRecentlyViewedFromLocal(),
 };
 
 let idSeed = 1;
@@ -40,6 +59,30 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         users: newUsers,
+      };
+    case 'add-recently-viewed': {
+      const { id, name } = action.payload;
+      const timestamp = Date.now();
+      
+      const filtered = state.recentlyViewedUsers.filter(u => u.id !== id);
+      
+      const updated = [
+        { id, name, timestamp },
+        ...filtered
+      ].slice(0, 10);
+      
+      saveRecentlyViewedToLocal(updated);
+      
+      return {
+        ...state,
+        recentlyViewedUsers: updated,
+      };
+    }
+    case 'clear-recently-viewed':
+      saveRecentlyViewedToLocal([]);
+      return {
+        ...state,
+        recentlyViewedUsers: [],
       };
     default:
       break;

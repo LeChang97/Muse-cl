@@ -1,5 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { Button, Avatar, Form, Alert, Tabs } from 'antd';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 import NiceModal from '@ebay/nice-modal-react';
 import UserInfoModal from './UserInfoModal';
 import NiceForm from '@ebay/nice-form-react';
@@ -10,8 +12,21 @@ import useAvatar from '../hooks/useAvatar';
 
 export default function UserDetail() {
   const { id } = useParams();
+  const dispatch = useDispatch();
   const { data: user, isLoading, isError } = useUserDetail(id);
   const avatarUrl = useAvatar(user);
+
+  useEffect(() => {
+    if (user && user.id && user.name) {
+      dispatch({
+        type: 'add-recently-viewed',
+        payload: {
+          id: user.id,
+          name: user.name,
+        },
+      });
+    }
+  }, [user, dispatch]);
 
   if (isLoading) {
     return <Alert message="Loading..." type="info" showIcon />;
